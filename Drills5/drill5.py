@@ -29,6 +29,7 @@ c_x, c_y = KPU_WIDTH // 2, KPU_HEIGHT // 2
 p_x,p_y = KPU_WIDTH // 2, KPU_HEIGHT // 2
 click_x, click_y = 0, 0
 frame = 0
+i, t = 0,0
 hide_cursor()
 
 
@@ -39,17 +40,18 @@ while running:
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
     cursor_arrow.draw(c_x, c_y)
 
-    for i in range(0,100+1,2):
-        t= i/100
-        p_x = (1-t)* p_x + t * click_x
-        p_y = (1-t) * p_y + t* click_y
-        character.clip_draw(frame * 100, 100, 100, 100, p_x, p_y)
+
+    i = (i +1) %100
+    t= i/100
+    p_x = (1-t)* p_x + t * click_x
+    p_y = (1-t) * p_y + t* click_y
+    character.clip_draw(frame * 100, 100, 100, 100, p_x, p_y)        
     
     update_canvas()
 
     handle_events()
     frame = (frame + 1) % 8
-    delay(0.01)
+    delay(0.05)
 
 close_canvas()
 
