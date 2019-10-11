@@ -1,10 +1,8 @@
 import turtle
 import random
 
-
 def stop():
     turtle.bye()
-
 
 def prepare_turtle_canvas():
     turtle.setup(1024, 768)
