@@ -5,6 +5,7 @@ import main_state
 
 name = "Pause State"
 image = None
+image_timer = 0.0
 
 
 def enter():
@@ -18,6 +19,20 @@ def exit():
 
 
 def handle_events():
+    pass
+
+
+def draw():
+    global image
+    clear_canvas()
+    game_framework.stack[-2].draw()
+    if(image_timer > 50):
+        image.draw(400, 300)
+    update_canvas()
+
+
+def update():
+    global image_timer
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -27,17 +42,7 @@ def handle_events():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_p):
                 game_framework.pop_state()
-
-
-def draw():
-    global image
-    clear_canvas()
-    image.draw(400,300)
-    update_canvas()
-
-
-def update():
-    pass
+    image_timer += image_timer % 100 +0.01
 
 
 def pause():
