@@ -89,6 +89,13 @@ def update():
             ball.stop()
             ball.x += block.speed * game_framework.frame_time
 
+    if collide(block, boy):
+        if boy.speed <= 0 and boy.y >= 170:
+            boy.speed = 0
+            boy.y = block.y + 50
+            boy.x += block.speed * game_framework.frame_time
+
+
 
 
 def draw():

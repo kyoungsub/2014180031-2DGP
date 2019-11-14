@@ -10,8 +10,8 @@ class Block:
     def update(self):
         if self.x > 1500:
             self.speed *= -1
-        elif self.x < 180:
-            self.speed *= 1
+        elif self.x < 90:
+            self.speed *= -1
 
         self.x += self.speed * game_framework.frame_time
 
