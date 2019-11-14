@@ -49,8 +49,7 @@ class IdleState:
     @staticmethod
     def exit(boy, event):
         if event == SPACE:
-            boy.fire_ball()
-        pass
+            boy.speed = 10
 
     @staticmethod
     def do(boy):
@@ -84,7 +83,7 @@ class RunState:
     @staticmethod
     def exit(boy, event):
         if event == SPACE:
-            boy.fire_ball()
+            boy.speed = 10
 
     @staticmethod
     def do(boy):
@@ -142,6 +141,7 @@ class Boy:
         self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.velocity = 0
+        self.speed = 0
         self.frame = 0
         self.event_que = []
         self.cur_state = IdleState
@@ -167,6 +167,11 @@ class Boy:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+        self.y += self.speed
+        if self.y > 400:
+            self.speed *= -1
+        elif self.y == 90:
+            self.speed = 0
 
     def draw(self):
         self.cur_state.draw(self)
