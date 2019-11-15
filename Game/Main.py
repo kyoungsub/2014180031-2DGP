@@ -3,30 +3,28 @@ import json
 import os
 
 from pico2d import *
-
 import game_framework
 
-
 from Player import Player
-from grass import Grass
+
 
 
 name = "MainState"
 
-boy = None
-grass = None
-font = None
+player = None
+ground = None
+
 
 
 def enter():
-    global boy, grass
-    boy = Boy()
-    grass = Grass()
+    global player, grass
+    player = Player()
+    ground = Grass()
 
 
 def exit():
-    global boy, grass
-    del boy
+    global player, grass
+    del player
     del grass
 
 
@@ -46,16 +44,16 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            boy.handle_event(event)
+            player.handle_event(event)
 
 
 def update():
-    boy.update()
+    player.update()
 
 
 def draw():
     clear_canvas()
     grass.draw()
-    boy.draw()
+    player.draw()
     update_canvas()
 
