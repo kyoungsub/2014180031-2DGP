@@ -12,7 +12,7 @@ from Land import Land
 name = "MainState"
 
 player = None
-Land = None
+land = None
 
 
 
@@ -47,7 +47,6 @@ def handle_events():
             player.Jump()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_LCTRL:
             player.shoot()
-
 
 
 def update():
