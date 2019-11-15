@@ -6,26 +6,26 @@ from pico2d import *
 import game_framework
 
 from Player import Player
-
+from Land import Land
 
 
 name = "MainState"
 
 player = None
-ground = None
+Land = None
 
 
 
 def enter():
-    global player, grass
+    global player, land
     player = Player()
-    ground = Grass()
+    land = Land()
 
 
 def exit():
-    global player, grass
+    global player, land
     del player
-    del grass
+    del land
 
 
 def pause():
@@ -43,17 +43,21 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
-        else:
-            player.handle_event(event)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
+            player.Jump()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_LCTRL:
+            player.shoot()
+
 
 
 def update():
     player.update()
+    land.update()
 
 
 def draw():
     clear_canvas()
-    grass.draw()
+    land.draw()
     player.draw()
     update_canvas()
 

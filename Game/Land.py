@@ -25,4 +25,4 @@ class Land:
                 self.image1.draw(100 * i, 15)
 
     def get_bb(self):
-        return 0, 0, 1600-1, 50
+        return 0, 0, 800-1, 30

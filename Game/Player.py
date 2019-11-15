@@ -19,59 +19,6 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 10
 
-# Player Event
-CTRL_DOWN, CTRL_UP,SPACE = range(3)
-
-key_event_table = {
-    (SDL_KEYDOWN, SDLK_LCTRL): CTRL_DOWN,
-    (SDL_KEYUP, SDLK_LCTRL): CTRL_UP,
-    (SDL_KEYDOWN, SDLK_SPACE): SPACE
-}
-
-
-class RunState:
-    @staticmethod
-    def enter(player, event):
-        player.dir = clamp(-1, player.velocity, 1)
-
-    @staticmethod
-    def exit(player, event):
-        if event == SPACE:
-            player.speed = 5
-
-    @staticmethod
-    def do(player):
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
-
-    @staticmethod
-    def draw(player):
-        player.image.clip_draw(int(player.frame) * SizeX, SizeY, SizeX, SizeY, player.x, player.y)
-
-class JumpState:
-    @staticmethod
-    def enter(player, event):
-        player.dir = clamp(-1, player.velocity, 1)
-
-    @staticmethod
-    def exit(player, event):
-        pass
-
-    @staticmethod
-    def do(player):
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
-
-    @staticmethod
-    def draw(player):
-        player.image.clip_draw(int(player.frame) * SizeX, SizeY, SizeX, SizeY, player.x, player.y)
-
-
-next_state_table = {
-    RunState: {CTRL_DOWN: RunState, CTRL_UP: RunState, SPACE: JumpState},
-    JumpState: {CTRL_DOWN: JumpState, CTRL_UP: JumpState, SPACE: JumpState}
-}
-
-
-
 
 class Player:
 
@@ -82,26 +29,28 @@ class Player:
         self.Jump_speed = 0
         self.frame = 0
         self.timer = 0      #이동거리에따라 땅 삭제를 위해
+        self.Is_jump = False
+        self.Is_shoot = False
+
 
     def get_bb(self):
         return self.x - (SizeX/2), self.y - (SizeY/2), self.x + (SizeX/2), self.y + (SizeY/2)
 
-    def fire(self):
-        slash = Ball(self.x, self.y, self.dir * RUN_SPEED_PPS * 10)
+    def shoot(self):
+        self.Is_shoot = True
+        slash = Slash(self.x, self.y)
         game_world.add_object(slash, 1)
 
+    def Jump(self):
+        self.Is_jump =True
+
     def update(self):
-        self.cur_state.do(self)
-        if len(self.event_que) > 0:
-            event = self.event_que.pop()
-            self.cur_state.exit(self, event)
-            self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self, event)
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
 
     def draw(self):
-        self.cur_state.draw(self)
+        if self.Is_jump == True:
+            self.image.clip_draw(int(self.frame) * SizeX, SizeY, SizeX, SizeY, self.x, self.y)
+        elif self.Is_shoot == True:
+            self.image.clip_draw(int(self.frame) * SizeX * 2, SizeY, SizeX, SizeY, self.x, self.y)
 
-    def handle_event(self, event):
-        if (event.type, event.key) in key_event_table:
-            key_event = key_event_table[(event.type, event.key)]
-            self.add_event(key_event)
+
