@@ -81,6 +81,7 @@ class Player:
         self.dir = 1
         self.Jump_speed = 0
         self.frame = 0
+        self.timer = 0      #이동거리에따라 땅 삭제를 위해
 
     def get_bb(self):
         return self.x - (SizeX/2), self.y - (SizeY/2), self.x + (SizeX/2), self.y + (SizeY/2)
