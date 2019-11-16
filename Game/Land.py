@@ -18,7 +18,6 @@ class Land:
         self.land_que = [1, 1, 0, 1, 1]
         self.location = 200
         self.fixed_pos = 0
-        self.player_pass = False
 
     def update(self):
         self.fixed_pos -= 200 * game_framework.frame_time

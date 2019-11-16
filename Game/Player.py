@@ -39,8 +39,6 @@ class Player:
         self.Is_jump =True
 
     def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
-
         #점프
         if self.Is_jump == True:
             if self.y > self.Jump_Maximum + 80:
@@ -50,7 +48,17 @@ class Player:
                 self.dir = 1
                 self.Is_jump = False
 
-        #프레임 수정 필요
+        #프레임 고정
+            if self.frame <= 4 and self.y <= self.Jump_Maximum and dir == -1:
+                self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+            elif self.y >= self.Jump_Maximum + 80 and dir == 1:
+                self.frame = 5
+            elif self.frame >= 5 and self.y <= self.Jump_Maximum and dir == -1:
+                self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+
+        else:
+            self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+
 
     def draw(self):
         if self.Is_jump == True:
