@@ -30,12 +30,14 @@ def collide(a, b):
 
 def enter():
     global player, land, background, slash
-    player = Player()
-    game_world.add_object(player, 1)
+    background = Background()
+    game_world.add_object(background, 0)
     land = Land()
     game_world.add_object(land, 0)
-    background = Background()
-    game_world.add_object(player, 0)
+    player = Player()
+    game_world.add_object(player, 1)
+
+
 
 
 def exit():
@@ -62,6 +64,7 @@ def handle_events():
             player.frame = 0
         elif event.type == SDL_KEYDOWN and event.key == SDLK_LCTRL:
             player.shoot()
+            player.frame = 1
 
 
 def update():

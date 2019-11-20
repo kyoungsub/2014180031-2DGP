@@ -7,9 +7,9 @@ class Slash:
     image = None
 
     def __init__(self, px, py):
-        if Slash.image == None:
-            Slash.image = load_image('Resource/slash.png')
-        self.x, self.y, self.shoot_speed = px + 30, py, 30
+        if self.image == None:
+            self.image = load_image('Resource/slash.png')
+        self.x, self.y, self.shoot_speed = px + 30, py, 100
 
 
 

@@ -10,6 +10,7 @@ class Background:
         self.location = 800
         self.fixed_pos = 0
 
+
     def update(self):
         self.fixed_pos -= 200 * game_framework.frame_time
         if self.fixed_pos <= -800:

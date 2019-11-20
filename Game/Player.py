@@ -35,6 +35,7 @@ class Player:
         slash = Slash(self.x, self.y)
         game_world.add_object(slash, 1)
 
+
     def Jump(self):
         self.Is_jump =True
 
@@ -56,8 +57,11 @@ class Player:
             elif self.frame >= 5 and self.y <= self.Jump_Maximum and dir == -1:
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
 
-        else:
-            self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+        #공격
+        if self.Is_shoot == True and self.frame == 0:
+            self.Is_shoot = False
+
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
 
 
     def draw(self):
