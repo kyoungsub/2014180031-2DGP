@@ -10,6 +10,8 @@ from Player import Player
 from Land import Land
 from Background import Background
 from Slash import Slash
+from Enemy import Enemy
+from Obstacle import Obstacle
 
 
 name = "MainState"
@@ -17,7 +19,9 @@ name = "MainState"
 player = None
 land = None
 background = None
-slash = []
+enemy = None
+obstacle = None
+slashs = []
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -29,13 +33,15 @@ def collide(a, b):
     return True
 
 def enter():
-    global player, land, background, slash
+    global player, land, background, enemy, obstacle
     background = Background()
     game_world.add_object(background, 0)
     land = Land()
     game_world.add_object(land, 0)
     player = Player()
     game_world.add_object(player, 1)
+    enemy = Enemy()
+    game_world.add_object(enemy, 1)
 
 
 
@@ -53,6 +59,8 @@ def resume():
 
 
 def handle_events():
+    global slashs
+
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -63,13 +71,49 @@ def handle_events():
             player.Jump()
             player.frame = 0
         elif event.type == SDL_KEYDOWN and event.key == SDLK_LCTRL:
-            player.shoot()
+            player.Is_shoot = True
+            slashs.append(Slash(player.x + 30, player.y))
+            for i in slashs:
+                game_world.add_object(i, 1)
             player.frame = 1
 
 
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    #공격과 적 충돌
+    if slashs != None:
+        for slash in slashs:
+            if collide(enemy, slash):
+                if enemy.kind == 1:
+                    enemy.enemy1HP -= 1
+                else:
+                    enemy.enemy2HP -= 1
+                slashs.remove(slash)
+                game_world.remove_object(slash)
+                if enemy.enemy1HP == 0 or enemy.enemy2HP == 0:
+                    game_world.remove_object(enemy)
+
+    #플레이어와 적 충돌
+    if collide(player, enemy):
+        game_world.remove_object(enemy)
+
+    #플레이어와 벽 충돌
+
+
+    #플레이어와 바닥
+    if land.land_que[1] == 0 and player.Is_jump == False:
+        player.fall = True
+    if land.land_que[1] == 0 and player.Is_jump == True and player.y <= 80:
+        player.fall = True
+
+
+
+    #게임오버
+    if player.y <= -100:
+        game_framework.quit()
+
 
 
 def draw():

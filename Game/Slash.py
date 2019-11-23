@@ -11,10 +11,7 @@ class Slash:
             self.image = load_image('Resource/slash.png')
         self.x, self.y, self.shoot_speed = px + 30, py, 100
 
-
-
     def get_bb(self):
-        # fill here
         return self.x - 70, self.y - 25, self.x + 70, self.y + 25
 
     def draw(self):

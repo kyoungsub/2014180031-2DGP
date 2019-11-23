@@ -15,9 +15,12 @@ class Land:
         self.image1 = load_image('Resource/floor/1stage/floor1.png')
         self.image2 = load_image('Resource/floor/1stage/floor2.png')
         self.image3 = load_image('Resource/floor/1stage/floor3.png')
-        self.land_que = [1, 1, 0, 1, 1]
+        self.land_que = [1, 1, 1, 1, 1]
         self.location = 200
         self.fixed_pos = 0
+
+    def get_bb(self):
+        return self.x - 100, self.y - 15, self.x + 100, self.y + 15
 
     def update(self):
         self.fixed_pos -= 200 * game_framework.frame_time
@@ -33,6 +36,3 @@ class Land:
         for i in range(5):
             if self.land_que[i] == 1:
                 self.image1.draw(self.location * i + self.fixed_pos + 100, 15)
-
-    def get_bb(self):
-        return 0, 0, 800-1, 30

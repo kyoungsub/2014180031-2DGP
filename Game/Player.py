@@ -1,6 +1,5 @@
 import game_framework
 from pico2d import *
-from Slash import Slash
 import game_world
 
 #Player Size
@@ -25,16 +24,11 @@ class Player:
         self.dir = 1
         self.Is_jump = False
         self.Is_shoot = False
+        self.fall = False
 
 
     def get_bb(self):
         return self.x - (SizeX/2), self.y - (SizeY/2), self.x + (SizeX/2), self.y + (SizeY/2)
-
-    def shoot(self):
-        self.Is_shoot = True
-        slash = Slash(self.x, self.y)
-        game_world.add_object(slash, 1)
-
 
     def Jump(self):
         self.Is_jump =True
@@ -44,24 +38,23 @@ class Player:
         if self.Is_jump == True:
             if self.y > self.Jump_Maximum + 80:
                 self.dir = -1
-            self.y += self.dir * 200 * game_framework.frame_time
             if self.y <= 80:
                 self.dir = 1
                 self.Is_jump = False
+            self.y += self.dir * 200 * game_framework.frame_time
 
-        #프레임 고정
-            if self.frame <= 4 and self.y <= self.Jump_Maximum and dir == -1:
-                self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
-            elif self.y >= self.Jump_Maximum + 80 and dir == 1:
-                self.frame = 5
-            elif self.frame >= 5 and self.y <= self.Jump_Maximum and dir == -1:
-                self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+        #점프 애니메이션 최적화
+            self.frame = (self.frame + FRAMES_PER_ACTION * 0.7 * game_framework.frame_time) % 10
+        else:
+            self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
 
         #공격
-        if self.Is_shoot == True and self.frame == 0:
+        if self.Is_shoot == True and self.frame >= 9:
             self.Is_shoot = False
 
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+        #낙하
+        if self.fall == True:
+            self.y -= 200 * game_framework.frame_time
 
 
     def draw(self):
