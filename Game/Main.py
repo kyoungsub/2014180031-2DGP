@@ -173,8 +173,10 @@ def update():
     #게임오버
     if player.y <= -100:
         game_framework.change_state(Over_state)
+        score = 0
     if player.Hp <= 0:
         game_framework.change_state(Over_state)
+        score = 0
 
 
 
