@@ -23,6 +23,7 @@ class Enemy:
         self.enemy2HP = 2 #5대
         self.frame = 0
         self.Is_hit = False
+        self.Died = False
         self.kind = random.randint(1, 2)
 
     def get_bb(self):
@@ -32,6 +33,13 @@ class Enemy:
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.x -= self.speed * game_framework.frame_time
+
+    def respawn(self):
+        self.x = 1000
+        self.kind = random.randint(1, 2)
+        self.enemy1HP = 1
+        self.enemy2HP = 2
+        self.Died = False
 
     def draw(self):
         if self.kind == 1:
