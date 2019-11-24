@@ -5,6 +5,7 @@ import os
 from pico2d import *
 import game_framework
 import game_world
+import Over_state
 
 from Player import Player
 from Land import Land
@@ -171,9 +172,9 @@ def update():
 
     #게임오버
     if player.y <= -100:
-        game_framework.quit()
+        game_framework.change_state(Over_state)
     if player.Hp <= 0:
-        game_framework.quit()
+        game_framework.change_state(Over_state)
 
 
 
@@ -181,6 +182,6 @@ def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
-    font.draw(400, 200, str(score), (255, 255, 0))
+    font.draw(400, 200, str(score), (255, 0, 0))
     update_canvas()
 
